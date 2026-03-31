@@ -1,0 +1,6 @@
+build/
+testproj
+*.o
+*.exe
+.vscode/
+.idea/
