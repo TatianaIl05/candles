@@ -2,7 +2,27 @@
 #include <functional>
 #include <iostream>
 
-#include "tests.h"
+#include "candle.h"
+
+#include <gtest/gtest.h>
+
+TEST(CandleTest, BodyContainsGreen) {
+  Candle candle{0.0, 3.0, 3.0, 3.0};
+  int price = 5;
+  ASSERT_EQ(candle.body_contains(price), false);
+}
+
+TEST(CandleTest, BodyContainsRed) {
+  Candle candle{5.0, 4.0, 2.0, 3.0};
+  int price = 3;
+  ASSERT_EQ(candle.body_contains(price), true);
+}
+
+TEST(CandleTest, BodyContainsUndefined) {
+  Candle candle{8.0, 1.0, 0.0, 8.0};
+  int price = 8;
+  ASSERT_EQ(candle.body_contains(price), true);
+}
 
 //массив всех тестов, который мы заполняем в функции initTests
 static std::vector<std::function<bool()>> tests;
@@ -65,8 +85,3 @@ int launchTests()
   return total - passed;
 }
 
-int main()
-{
-  initTests();
-  return launchTests();
-}

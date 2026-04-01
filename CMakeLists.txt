@@ -3,6 +3,8 @@ project(testproj CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 
+find_package(GTest REQUIRED)
+
 set(SOURCES
     main.cpp
     candle.cpp
@@ -13,3 +15,5 @@ set(HEADERS
 )
 
 add_executable(testproj ${SOURCES} ${HEADERS})
+
+target_link_libraries(testproj GTest::GTest GTest::Main)
