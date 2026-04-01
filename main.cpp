@@ -1,10 +1,10 @@
 ﻿#include <vector>
 #include <functional>
 #include <iostream>
+#include <gtest/gtest.h>
 
 #include "candle.h"
 
-#include <gtest/gtest.h>
 
 TEST(CandleTest, BodyContainsGreen) {
   Candle candle{0.0, 3.0, 3.0, 3.0};
@@ -57,7 +57,21 @@ TEST(CandleTest, FullSizeZero) {
   ASSERT_EQ(candle.full_size(), 0);
 }
 
-//массив всех тестов, который мы заполняем в функции initTests
+TEST(CandleTest, BodySizeOpenClose) {
+  Candle candle{5.0, 6.0, 1.0, 2.0};
+  ASSERT_EQ(candle.body_size(), 3);
+}
+
+TEST(CandleTest, BodySizeCloseOpen) {
+  Candle candle{7.0, 1.0, 6.0, 9.0};
+  ASSERT_EQ(candle.body_size(), 2);
+}
+
+TEST(CandleTest, BodySizeZero) {
+  Candle candle{6.0, 2.0, 5.0, 6.0};
+  ASSERT_EQ(candle.body_size(), 0);
+}
+
 static std::vector<std::function<bool()>> tests;
 
 //тест 1
