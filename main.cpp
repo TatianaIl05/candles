@@ -42,6 +42,21 @@ TEST(CandleTest, ContainsLimit) {
   ASSERT_EQ(candle.contains(price), true);
 }
 
+TEST(CandleTest, FullSizeHighLow) {
+  Candle candle{5.0, 6.0, 1.0, 2.0};
+  ASSERT_EQ(candle.full_size(), 5);
+}
+
+TEST(CandleTest, FullSizeLowHigh) {
+  Candle candle{9.0, 1.0, 6.0, 7.0};
+  ASSERT_EQ(candle.full_size(), 5);
+}
+
+TEST(CandleTest, FullSizeZero) {
+  Candle candle{8.0, 2.0, 2.0, 6.0};
+  ASSERT_EQ(candle.full_size(), 0);
+}
+
 //массив всех тестов, который мы заполняем в функции initTests
 static std::vector<std::function<bool()>> tests;
 
