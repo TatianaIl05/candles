@@ -24,6 +24,24 @@ TEST(CandleTest, BodyContainsUndefined) {
   ASSERT_EQ(candle.body_contains(price), true);
 }
 
+TEST(CandleTest, ContainsStandardTrue) {
+  Candle candle{7.0, 1.0, 0.0, 8.0};
+  int price = 0.5;
+  ASSERT_EQ(candle.contains(price), true);
+}
+
+TEST(CandleTest, ContainsStandardFalse) {
+  Candle candle{8.0, 1.0, 0.0, 4.0};
+  int price = 10;
+  ASSERT_EQ(candle.contains(price), false);
+}
+
+TEST(CandleTest, ContainsLimit) {
+  Candle candle{8.0, 3.0, 1.0, 7.0};
+  int price = 1;
+  ASSERT_EQ(candle.contains(price), true);
+}
+
 //массив всех тестов, который мы заполняем в функции initTests
 static std::vector<std::function<bool()>> tests;
 
