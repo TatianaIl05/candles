@@ -6,6 +6,10 @@ on:
       - feature/k8s-helm
   workflow_dispatch:
 
+permissions:
+  contents: write
+  packages: write
+  
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
