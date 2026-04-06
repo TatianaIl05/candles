@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: repo-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: repo-web
+  template:
+    metadata:
+      labels:
+        app: repo-web
+    spec:
+      serviceAccountName: web-sa
+      containers:
+      - name: web
+        image: tatianail05/repo-web:latest
+        ports:
+        - containerPort: 80

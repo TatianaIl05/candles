@@ -1,0 +1,13 @@
+app:
+  image: tatianail05/repo-app:latest
+  name: repo-app
+
+web:
+  image: tatianail05/repo-web:latest
+  name: repo-web
+
+service:
+  port: 80
+  type: LoadBalancer
+
+replicas: 1
