@@ -25,7 +25,7 @@ jobs:
           context: .
           file: ./Dockerfile.app
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/test-repo-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/repo-app:latest
 
       - name: Build and Push Web
         uses: docker/build-push-action@v4
@@ -33,4 +33,4 @@ jobs:
           context: .
           file: ./Dockerfile.web
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/test-repo-web:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/repo-web:latest
