@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.app
-    container_name: test-repo-app
+    container_name: repo-app
     # Принудительно держим контейнер активным, чтобы web мог получить логи
     command: sh -c "./build/testproj && sleep infinity"
 
@@ -13,7 +13,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.web
-    container_name: test-repo-web
+    container_name: repo-web
     ports:
       - "80:80"
     depends_on:

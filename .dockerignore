@@ -5,3 +5,5 @@ build/
 Dockerfile.app
 Dockerfile.web
 docker-compose.yml
+k8s/
+helm/

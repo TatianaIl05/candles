@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.web.name }}
+  name: repo-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.web.name }}
+      app: repo-web
   template:
     metadata:
       labels:
-        app: {{ .Values.web.name }}
+        app: repo-web
     spec:
       serviceAccountName: web-sa
       containers:
       - name: web
-        image: {{ .Values.web.image }}
+        image: tatianail05/repo-web:latest
         ports:
         - containerPort: 80

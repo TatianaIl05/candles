@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.app.name }}
+  name: repo-app
   labels:
-    app: {{ .Values.app.name }}
+    app: repo-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.app.name }}
+      app: repo-app
   template:
     metadata:
       labels:
-        app: {{ .Values.app.name }}
+        app: repo-app
     spec:
       containers:
       - name: app
-        image: {{ .Values.app.image }}
+        image: tatianail05/repo-app:latest
         imagePullPolicy: Always
         command: ["/bin/sh"]
-        args: ["-c", "./build/testproj && sleep infinity"]
+        args: ["-c", "./build/testproj && sleep 3600"]
