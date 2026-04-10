@@ -59,6 +59,7 @@ jobs:
           files: ${{ env.CHART_FILE }}
           tag_name: helm-chart-${{ github.run_number }}
           name: Helm Chart ${{ github.run_number }}
+          target_commitish: feature/k8s-helm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
