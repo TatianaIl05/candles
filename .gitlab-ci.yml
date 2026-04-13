@@ -1,2 +1,4 @@
 test_job:
-  script: "echo Hello"
+  script:
+    - echo "Hello"
+    - echo "World"
