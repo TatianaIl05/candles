@@ -25,6 +25,7 @@ publish_images:
   tags:
     - docker
   script:
+    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
     - docker push $APP_IMAGE:$CI_COMMIT_TAG
     - docker push $WEB_IMAGE:$CI_COMMIT_TAG
   only:
