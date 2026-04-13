@@ -7,6 +7,5 @@ test_vars:
     - docker
   script:
     - echo "Username: $DOCKERHUB_USERNAME"
-    - echo "Password exists: $(test -n "$DOCKERHUB_PASSWORD" && echo yes || echo no)"
+    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
     - docker --version
-    - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
