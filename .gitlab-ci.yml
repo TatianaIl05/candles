@@ -55,8 +55,7 @@ deploy_k8s:
   tags:
     - docker
   script:
-    - echo "$KUBE_CONFIG" > kubeconfig.yaml
-    - export KUBECONFIG=kubeconfig.yaml
+    - export KUBECONFIG=$KUBE_CONFIG
     - apk add --no-cache curl
     - curl -LO "https://get.helm.sh/helm-v3.10.0-linux-amd64.tar.gz"
     - tar -xzf helm-v3.10.0-linux-amd64.tar.gz
