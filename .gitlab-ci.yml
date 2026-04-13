@@ -1,4 +1,4 @@
 test_job:
   script:
-    - echo "Hello"
-    - echo "World"
+    - echo "$DOCKERHUB_USERNAME"
+    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
