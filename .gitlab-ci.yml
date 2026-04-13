@@ -16,6 +16,8 @@ build_app:
   image: docker:20.10
   services:
     - docker:dind
+  tags:                           # ← ДОБАВИТЬ
+    - docker                      # ← ДОБАВИТЬ
   script:
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
     - docker build -t $APP_IMAGE:$CI_COMMIT_TAG -f Dockerfile.app .
@@ -23,21 +25,25 @@ build_app:
   only:
     - tags
 
-# 2. Запуск тестов (временный контейнер)
+# 2. Запуск тестов
 test_app:
   stage: test
   image: $APP_IMAGE:$CI_COMMIT_TAG
+  tags:                           # ← ДОБАВИТЬ
+    - docker                      # ← ДОБАВИТЬ
   script:
-    - /app/build/testproj   # путь к вашим тестам
+    - /app/build/testproj
   only:
     - tags
 
-# 3. Публикация образов на Docker Hub
+# 3. Публикация образов
 publish_images:
   stage: publish
   image: docker:20.10
   services:
     - docker:dind
+  tags:                           # ← ДОБАВИТЬ
+    - docker                      # ← ДОБАВИТЬ
   script:
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
     - docker push $APP_IMAGE:$CI_COMMIT_TAG
@@ -45,18 +51,16 @@ publish_images:
   only:
     - tags
 
-# 4. Публикация Helm-чарта в GitLab Pages (как Helm-репозиторий)
+# 4. Публикация Helm-чарта
 publish_helm:
   stage: pages
   image: alpine/helm:3.10.0
+  tags:                           # ← ДОБАВИТЬ
+    - docker                      # ← ДОБАВИТЬ
   script:
-    # Упаковать чарт с версией = тегу
     - helm package helm/test-repo-chart --version $CI_COMMIT_TAG
-    # Создать директорию для Pages
     - mkdir -p public/helm
-    # Переместить чарт
     - mv test-repo-chart-$CI_COMMIT_TAG.tgz public/helm/
-    # Создать index.yaml (индекс Helm-репозитория)
     - helm repo index public/helm --url https://$CI_PROJECT_ROOT_NAMESPACE.gitlab.io/$CI_PROJECT_NAME/helm
   artifacts:
     paths:
@@ -68,6 +72,8 @@ publish_helm:
 deploy_k8s:
   stage: deploy
   image: bitnami/kubectl:1.23
+  tags:                           # ← ДОБАВИТЬ
+    - docker                      # ← ДОБАВИТЬ
   script:
     - echo "$KUBE_CONFIG" > kubeconfig.yaml
     - export KUBECONFIG=kubeconfig.yaml
@@ -77,13 +83,15 @@ deploy_k8s:
   only:
     - tags
 
-# 6. Публикация результатов тестов на GitLab Pages (статический сайт)
+# 6. Публикация результатов тестов
 pages:
   stage: pages
   image: $WEB_IMAGE:$CI_COMMIT_TAG
+  tags:                           # ← ДОБАВИТЬ
+    - docker                      # ← ДОБАВИТЬ
   script:
     - mkdir -p public
-    - /entrypoint.sh > public/index.html   # сохраняем вывод веб-сервера как HTML
+    - /entrypoint.sh > public/index.html
   artifacts:
     paths:
       - public
