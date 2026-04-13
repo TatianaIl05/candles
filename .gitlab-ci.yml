@@ -1,11 +1,5 @@
-stages:
-  - test
-
 test_vars:
-  stage: test
-  tags:
-    - docker
   script:
     - echo "Username: $DOCKERHUB_USERNAME"
-    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
-    - docker --version
+    - echo "Password: $DOCKERHUB_PASSWORD"
+    
