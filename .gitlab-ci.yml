@@ -13,6 +13,8 @@ build_app:
   stage: build
   tags:
     - docker
+  services:
+    - docker:dind
   script:
     - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
     - docker build -t $APP_IMAGE:$CI_COMMIT_TAG -f Dockerfile.app .
