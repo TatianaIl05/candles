@@ -43,7 +43,7 @@ publish_helm:
     - helm repo index public/helm --url https://$CI_PROJECT_ROOT_NAMESPACE.gitlab.io/$CI_PROJECT_NAME/helm
   artifacts:
     paths:
-      - public
+      - public/helm
   only:
     - tags
 
