@@ -35,7 +35,9 @@ publish_images:
 
 publish_helm:
   stage: pages
-  image: alpine/helm:3.10.0
+  image: 
+    name: alpine/helm:3.10.0
+    entrypoint: [""]
   script:
     - helm package helm/test-repo-chart --version $CI_COMMIT_TAG
     - mkdir -p public/helm
@@ -49,7 +51,9 @@ publish_helm:
 
 deploy_k8s:
   stage: deploy
-  image: alpine/helm:3.10.0
+  image: 
+    name: alpine/helm:3.10.0
+    entrypoint: [""]
   script:
     - helm upgrade --install $HELM_RELEASE_NAME helm/test-repo-chart --set app.image=$APP_IMAGE:$CI_COMMIT_TAG --set web.image=$WEB_IMAGE:$CI_COMMIT_TAG
   only:
