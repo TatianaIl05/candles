@@ -16,6 +16,7 @@ build_app:
   services:
     - docker:dind
   script:
+    - ls -la /var/run/
     - ls -la /var/run/docker.sock
     - docker info
     - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
