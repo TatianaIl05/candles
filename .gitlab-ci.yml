@@ -69,7 +69,7 @@ pages:
   script:
     - mkdir -p public
     - echo "<html><head><title>Test Results</title></head><body><pre>" > public/index.html
-    - docker run --rm --entrypoint /bin/sh $WEB_IMAGE:$CI_COMMIT_TAG -c "kubectl logs -l app=test-repo-app --tail=-1 2>&1 | sed 's/$/<br>/'" >> public/index.html
+    - docker run --rm -v /home/tania/.kube:/root/.kube --entrypoint /bin/sh $WEB_IMAGE:$CI_COMMIT_TAG -c "kubectl logs -l app=test-repo-app --tail=-1 2>&1 | sed 's/$/<br>/'" >> public/index.html
     - echo "</pre></body></html>" >> public/index.html
   artifacts:
     paths:
