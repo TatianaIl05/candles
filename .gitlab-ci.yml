@@ -71,7 +71,7 @@ pages:
   script:
     - mkdir -p public
     - echo "<html><head><title>Test Results</title></head><body><pre>" > public/index.html
-    - kubectl logs -l app=test-repo-app --tail=-1 2>&1 | sed 's/$/<br>/' >> public/index.html
+    - kubectl logs -l app=repo-app --tail=-1 2>&1 | sed 's/$/<br>/' >> public/index.html
     - echo "</pre></body></html>" >> public/index.html
   artifacts:
     paths:
