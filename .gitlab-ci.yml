@@ -66,9 +66,10 @@ pages:
   tags:
     - docker
   image: 
-    name: bitnami/kubectl:latest
+    name: alpine/helm:3.10.0
     entrypoint: [""]
   script:
+    - apk add --no-cache kubectl
     - mkdir -p public
     - echo "<html><head><title>Test Results</title></head><body><pre>" > public/index.html
     - kubectl logs -l app=repo-app --tail=-1 2>&1 | sed 's/$/<br>/' >> public/index.html
