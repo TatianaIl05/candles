@@ -68,8 +68,8 @@ pages:
   image: docker:20.10
   script:
     - mkdir -p public
-    - echo "<html><body><h1>Test Results</h1><pre>" > public/index.html
-    - docker run --rm $WEB_IMAGE:$CI_COMMIT_TAG /entrypoint.sh >> public/index.html
+    - echo "<html><head><title>Test Results</title></head><body><pre>" > public/index.html
+    - kubectl logs -l app=test-repo-app --tail=-1 2>&1 >> public/index.html
     - echo "</pre></body></html>" >> public/index.html
   artifacts:
     paths:
