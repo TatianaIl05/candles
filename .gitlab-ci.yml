@@ -65,10 +65,14 @@ pages:
   stage: pages
   tags:
     - docker
-  image: bitnami/kubectl:latest
+  image: 
+    name: alpine/helm:3.10.0
+    entrypoint: [""]
   script:
     - mkdir -p public
-    - kubectl logs -l app=repo-app --tail=-1 > public/index.html
+    - echo "<html><head><title>Test Results</title></head><body><pre>" > public/index.html
+    - kubectl logs -l app=repo-app --tail=-1 2>&1 | sed 's/$/<br>/' >> public/index.html
+    - echo "</pre></body></html>" >> public/index.html
   artifacts:
     paths:
       - public
