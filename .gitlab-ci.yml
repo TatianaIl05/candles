@@ -59,6 +59,7 @@ pages:
   stage: pages
   tags:
     - docker
+  image: docker:20.10
   script:
     - mkdir -p public
     - echo "<html><body><h1>Test Results</h1><pre>" > public/index.html
