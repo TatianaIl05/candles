@@ -11,14 +11,7 @@ variables:
 
 build_app:
   stage: build
-  tags:
-    - docker
   script:
-    - whoami
-    - id
-    - ls -la /var/run/docker.sock
-    - docker info
-    - docker info
     - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
     - docker build -t $APP_IMAGE:$CI_COMMIT_TAG -f Dockerfile.app .
     - docker build -t $WEB_IMAGE:$CI_COMMIT_TAG -f Dockerfile.web .
@@ -27,10 +20,7 @@ build_app:
 
 publish_images:
   stage: publish
-  tags:
-    - docker
   script:
-    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
     - docker push $APP_IMAGE:$CI_COMMIT_TAG
     - docker push $WEB_IMAGE:$CI_COMMIT_TAG
   only:
@@ -38,9 +28,6 @@ publish_images:
 
 publish_helm:
   stage: pages
-  image: 
-    name: alpine/helm:3.10.0
-    entrypoint: [""]
   script:
     - helm package helm/test-repo-chart --version $CI_COMMIT_TAG
     - mkdir -p public/helm
@@ -54,23 +41,13 @@ publish_helm:
 
 deploy_k8s:
   stage: deploy
-  image: 
-    name: alpine/helm:3.10.0
-    entrypoint: [""]
   script:
-    - ls -la /root/.kube
-    - cat /root/.kube/config | head -5
     - helm upgrade --install $HELM_RELEASE_NAME helm/test-repo-chart --set app.image=$APP_IMAGE:$CI_COMMIT_TAG --set web.image=$WEB_IMAGE:$CI_COMMIT_TAG
   only:
     - tags
 
 pages:
   stage: pages
-  tags:
-    - docker
-  image: 
-    name: alpine/helm:3.10.0
-    entrypoint: [""]
   script:
     - mkdir -p public
     - echo "<html><head><title>Test Results</title></head><body><pre>" > public/index.html
