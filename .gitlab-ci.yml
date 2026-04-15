@@ -24,8 +24,9 @@ build_app:
 
 test_app:
   stage: test
-  image: $APP_IMAGE:$CI_COMMIT_TAG
+  image: $APP_IMAGE:latest
   script:
+    - ls -la /app/build/
     - /app/build/testproj
   only:
     - tags
