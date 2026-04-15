@@ -6,8 +6,8 @@ stages:
   - pages
 
 variables:
-  APP_IMAGE: $DOCKERHUB_USERNAME/test-repo-app
-  WEB_IMAGE: $DOCKERHUB_USERNAME/test-repo-web
+  APP_IMAGE: $DOCKERHUB_USERNAME/repo-app
+  WEB_IMAGE: $DOCKERHUB_USERNAME/repo-web
   HELM_RELEASE_NAME: test-release
 
 build_app:
