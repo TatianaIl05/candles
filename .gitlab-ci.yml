@@ -26,8 +26,8 @@ test_app:
   stage: test
   image: $APP_IMAGE:latest
   script:
-    - ls -la ./build/
-    - ./build/testproj 
+    - ls -la /app/build/
+    - /app/build/testproj 
   only:
     - tags
 
