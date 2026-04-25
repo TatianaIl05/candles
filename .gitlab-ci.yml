@@ -17,7 +17,18 @@ build_app:
     - docker:dind
   script:
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-    - docker build -t $APP_IMAGE:$CI_COMMIT_TAG -f Dockerfile.app .
+    
+    # Build with no cache to ensure fresh build
+    - docker build --no-cache -t $APP_IMAGE:$CI_COMMIT_TAG -f Dockerfile.app .
+    
+    # Debug: Inspect the image contents
+    - echo "=== Checking image contents ==="
+    - docker run --rm $APP_IMAGE:$CI_COMMIT_TAG ls -la / 2>&1 || echo "Failed to list root"
+    - docker run --rm $APP_IMAGE:$CI_COMMIT_TAG ls -la /app 2>&1 || echo "No /app directory"
+    - docker run --rm $APP_IMAGE:$CI_COMMIT_TAG find / -name "testproj" 2>&1 || echo "testproj not found"
+    - docker run --rm $APP_IMAGE:$CI_COMMIT_TAG which gcc 2>&1 || echo "gcc not found"
+    
+    # Build web image
     - docker build -t $WEB_IMAGE:$CI_COMMIT_TAG -f Dockerfile.web .
   only:
     - tags
