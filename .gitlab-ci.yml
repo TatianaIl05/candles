@@ -7,28 +7,18 @@ stages:
 variables:
   APP_IMAGE: $DOCKERHUB_USERNAME/repo-app
   WEB_IMAGE: $DOCKERHUB_USERNAME/repo-web
-  # NO DOCKER_HOST variables - use default socket
+  # Override and unset DOCKER_HOST
+  DOCKER_HOST: ""  # Empty string to use default socket
 
-test_docker:
-  stage: build
-  image: docker:20.10
-  tags:
-    - docker
-  script:
-    - docker version
-    - docker info
-    - docker run --rm hello-world
-  only:
-    - tags
-    
 build_app:
   stage: build
   image: docker:20.10
   tags:
     - docker
-  # NO services section
-  # NO DOCKER_HOST variables
+  variables:
+    DOCKER_HOST: ""  # Unset for this job
   script:
+    - docker version  # Test if Docker works
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
     - docker build --no-cache -t $APP_IMAGE:$CI_COMMIT_TAG -f Dockerfile.app .
     - docker build -t $WEB_IMAGE:$CI_COMMIT_TAG -f Dockerfile.web .
@@ -39,8 +29,12 @@ test_app:
   stage: test
   tags:
     - docker
+  variables:
+    DOCKER_HOST: ""
   script:
+    - docker version
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+    - docker pull $APP_IMAGE:$CI_COMMIT_TAG
     - docker run --rm $APP_IMAGE:$CI_COMMIT_TAG /app/build/testproj
   only:
     - tags
@@ -52,6 +46,8 @@ publish_images:
   image: docker:20.10
   tags:
     - docker
+  variables:
+    DOCKER_HOST: ""
   script:
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
     - docker push $APP_IMAGE:$CI_COMMIT_TAG
@@ -83,6 +79,8 @@ pages:
   tags:
     - docker
   image: alpine:latest
+  variables:
+    DOCKER_HOST: ""
   script:
     - apk add --no-cache docker-cli
     - mkdir -p public
@@ -121,6 +119,7 @@ pages:
     
     # Run the test and capture output
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+    - docker pull $APP_IMAGE:$CI_COMMIT_TAG
     - docker run --rm $APP_IMAGE:$CI_COMMIT_TAG /app/build/testproj 2>&1 | tee -a public/index.html
     
     # Close HTML
