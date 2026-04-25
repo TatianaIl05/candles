@@ -35,20 +35,9 @@ build_app:
 
 test_app:
   stage: test
-  image: $APP_IMAGE:$CI_COMMIT_TAG
   script:
-    - echo "Current working directory:"
-    - pwd
-    - echo "List root directory:"
-    - ls -la /
-    - echo "List home directory:"
-    - ls -la /home
-    - echo "List app directory if exists:"
-    - ls -la /app 2>/dev/null || echo "/app not found"
-    - echo "Find testproj binary anywhere:"
-    - find / -name "testproj" -type f 2>/dev/null || echo "testproj not found"
-    - echo "Check if we're in the right image:"
-    - cat /etc/os-release
+    - docker pull $APP_IMAGE:$CI_COMMIT_TAG
+    - docker run --rm $APP_IMAGE:$CI_COMMIT_TAG /app/build/testproj
   only:
     - tags
 
